@@ -13,12 +13,15 @@
     "flatpickr": "^4.5.1",
     "nouislider": "^11.1.0",
     "register-service-worker": "^1.5.2",
+    "uninstall": "0.0.0",
     "vue": "^2.6.6",
     "vue-flatpickr-component": "^8.1.1",
     "vue-json-editor": "^1.4.3",
     "vue-json-viewer": "^2.2.22",
     "vue-lazyload": "^1.2.6",
+    "vue-loading-spinner": "^1.0.11",
     "vue-router": "^3.0.2",
+    "vue-spinner": "^1.0.4",
     "vue2-transitions": "^0.2.3"
   },
   "devDependencies": {

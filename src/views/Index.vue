@@ -7,13 +7,9 @@
                 <card>
                     
                     <div class="row justify-content-center">
-                        <custom-dropdown color="default" v-model="typeRequest" :options="options"></custom-dropdown>
-                        <base-input class="w-75" placeholder="https://example.com" ></base-input>
-                        <base-dropdown>
-                            <base-button class="ml-2" size="md"  > Send </base-button>
-                        </base-dropdown>
-                        
-                        
+                        <custom-dropdown v-model="request.method" color="default" :options="options"></custom-dropdown>
+                        <base-input v-model="request.url" class="w-75" placeholder="https://example.com" ></base-input>
+                        <div><base-button class="ml-2" size="md"  @click="send"> Send </base-button></div>
                     </div>
 
                     <div class="row">
@@ -21,7 +17,6 @@
                             <tabs>
                                 <tab-pane>
                                     <span slot="title">
-                                        <i class="ni ni-cloud-upload-96" />
                                         Query Params
                                     </span>
 
@@ -31,15 +26,17 @@
                                 </tab-pane>
                                 <tab-pane title="Profile">
                                     <span slot="title">
-                                        Headers <badge type="default">4</badge>
+                                        Headers <badge type="default">{{ countHeaders }}</badge>
                                     </span>
                                     
-                                    <base-table :columns="columns" :records="[]" />
+                                    <base-table :columns="columns" :records="headers" @on-add="onAdd" >
+
+                                    
+                                    </base-table>
                                 
                                 </tab-pane>
                                 <tab-pane title="Body">
                                     <span slot="title">
-                                        <i class="ni ni-bell-55 mr-2" />
                                         Body
                                     </span>
 
@@ -77,10 +74,12 @@ import TabPane from '../components/Tabs/TabPane.vue'
 import Badge from '../components/Badge.vue'
 import BaseTable from '../components/BaseTable.vue'
 import vueJsonEditor from 'vue-json-editor'
+import Request from '../Request'
+import BaseDropdown from '../components/BaseDropdown.vue'
+import { Formater } from '../core';
 
 export default {
-    components: { Card, CustomDropdown, BaseInput, BaseButton, Tabs, TabPane, Badge, BaseTable, vueJsonEditor },
-
+    components: { Card, CustomDropdown, BaseInput, BaseButton, Tabs, TabPane, Badge, BaseTable, vueJsonEditor, BaseDropdown },
     data(){
         return {
             options:[
@@ -90,8 +89,6 @@ export default {
                 'DELETE',
                 'PATCH'
             ],
-            typeRequest:null,
-
             columns: [
                 {
                     label:'Key',
@@ -102,14 +99,67 @@ export default {
                     column: 'value'
                 }
             ],
-            records:null
+            records:null,
+            body:null,
+            headers:[
+                {
+                    key: 'Accept',
+                    value: '*/*'
+                },
+                {
+                    key: 'User-Agent',
+                    value : 'Api Documentation'
+                },
+            ],
+            request:{
+                url:null,
+                data:null,
+                headers:null,
+                method:null,
+            },
+
+            simulateObject:{
+                dataArray:[1,2,3,4,5,6],
+                dataBoolean:true,
+                dataDateTime: '2012-02-12 01:02:02',
+                dataDate: '2012-02-12',
+                dataFloat: 1.23,
+                dataInteger: 1,
+                dataObject:{
+                    attribute: {
+                        dataInteger: 1,
+                    }
+                },
+                dataString: 'hola mundo'
+            }
             
         }
     },
-    watch:{
-        records(va){
-            console.log(va);
+    computed:{
+        countHeaders(){
+            return this.headers.length;
         }
+    },
+    methods:{
+        async send(){
+
+            let headers = {};
+            for(let header in this.headers){
+                headers[header.key] = header.value;
+            }
+
+
+            const records = await Request.send({...this.request, headers});
+            const f = Formater.format(records.data);
+            console.log(f);
+        },
+        onAdd(){
+            this.headers.push({
+                key:null,
+                value:null
+            });
+        }
+
     }
 
 

@@ -21,8 +21,11 @@ import router from "./router";
 import Argon from "./plugins/argon-kit";
 import './registerServiceWorker'
 import JsonViewer from 'vue-json-viewer'
+import loaderMixin from './mixins/loader-mixin';
 
 Vue.use(JsonViewer)
+
+Vue.mixin(loaderMixin);
 
 Vue.config.productionTip = false;
 Vue.use(Argon);
