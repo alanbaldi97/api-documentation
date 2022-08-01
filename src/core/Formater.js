@@ -7,10 +7,19 @@ import { CheckType } from './CheckType';
 export class Formater{
 
     static formatArray(array = [], key, result = null){
-        let item = array.shift();
+        let type;
+        let item;
+        if(array.length == 0){
+            type = 'empty';
+            item = null;
+        }else {
+            item = array.shift();
+            type = CheckType.check(item);
+        }
+        
         result = result || {}
 
-        let type = CheckType.check(item);
+        
         key = key || 'array'
         result[key] = `array[${type}]`
 
@@ -52,6 +61,7 @@ export class Formater{
         }else if( ObjectType.is(value)){
             result = Formater.formatObject(value);
         }else {
+            console.log(value);
             throw new Error('The value should be Array or Object');
         }
 

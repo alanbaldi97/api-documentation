@@ -231,6 +231,7 @@ export default {
                 this.response = response;
                 
             } catch (error) {
+                console.log(error);
                 this.response = error.response || null;
             }finally{
                 this.loading = false;
