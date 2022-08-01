@@ -8,7 +8,14 @@
                     <div class="row justify-content-center">
                         <custom-dropdown v-model="request.method" color="default" :options="options"></custom-dropdown>
                         <base-input v-model="request.url" class="w-75" placeholder="https://example.com" ></base-input>
-                        <div><base-button class="ml-2" size="md"  @click="send"> Send </base-button></div>
+                        <div>
+                            <base-button class="ml-2" size="md"  @click="send"> 
+                                <template v-if="!loading">
+                                    Send
+                                </template>
+                                <clip-loader v-else color="white" size="25px"></clip-loader>
+                            </base-button>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -78,7 +85,7 @@
                                     <vue-json-editor v-model="request.data" :show-btns="false" :expandedOnStart="true"></vue-json-editor>
                                 
                                 </tab-pane>
-                                <tab-pane v-if="response" title="Response">
+                                <tab-pane v-if="response && !loading" title="Response">
                                     <span slot="title">
                                         Response
                                     </span>
@@ -190,7 +197,8 @@ export default {
                     key:null,
                     value:null,
                 }
-            ]
+            ],
+            loading:false,
         }
     },
     computed:{
@@ -211,6 +219,7 @@ export default {
         async send(){
 
             try {
+                this.loading = true;
                 let headers = {};
                 for(let header of this.headers){
                     headers[header.key] = header.value;
@@ -223,6 +232,8 @@ export default {
                 
             } catch (error) {
                 this.response = error.response || null;
+            }finally{
+                this.loading = false;
             }
 
         },

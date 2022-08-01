@@ -22,10 +22,13 @@ import Argon from "./plugins/argon-kit";
 import './registerServiceWorker'
 import JsonViewer from 'vue-json-viewer'
 import loaderMixin from './mixins/loader-mixin';
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 Vue.use(JsonViewer)
 
 Vue.mixin(loaderMixin);
+
+Vue.component('clip-loader',ClipLoader)
 
 Vue.config.productionTip = false;
 Vue.use(Argon);
