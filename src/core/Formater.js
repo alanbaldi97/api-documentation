@@ -46,14 +46,24 @@ export class Formater{
     }
 
     static format(value){
+        let result = {};
         if(ArrayType.is(value)){
-            return Formater.formatArray(value);
+            result = Formater.formatArray(value);
         }else if( ObjectType.is(value)){
-            return Formater.formatObject(value);
+            result = Formater.formatObject(value);
+        }else {
+            throw new Error('The value should be Array or Object');
         }
 
-        throw new Error('The value should be Array or Object');
+        let parameters = [];
+        for( let key in result){
+            parameters.push({
+                type:result[key],
+                name: key
+            });
+        }
 
+        return parameters;
     }
 
 }

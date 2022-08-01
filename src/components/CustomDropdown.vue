@@ -20,7 +20,8 @@ export default {
             default: ''
         },
         value:{
-            type:null
+            type:null,
+            default:null,
         },
         options:{
             type:Array,
@@ -35,6 +36,9 @@ export default {
             default: null
         }
 
+    },
+    created(){
+        this.onSelected(this.value);
     },
     data(){
         return {
