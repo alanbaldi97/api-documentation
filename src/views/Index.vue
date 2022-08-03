@@ -85,13 +85,18 @@
                                     <vue-json-editor v-model="request.data" :show-btns="false" :expandedOnStart="true"></vue-json-editor>
                                 
                                 </tab-pane>
+                                
                                 <tab-pane v-if="response && !loading" title="Response">
                                     <span slot="title">
                                         Response
                                     </span>
                                     
                                     <tabs>
-                                        <tab-pane title="Response">
+                                        <tab-pane v-if="response && !loading" title="Response">
+                                            <json-viewer copyable  v-model="responseData" />
+
+                                        </tab-pane>
+                                        <tab-pane title="Params">
                                             <card style="border: 2px solid #a9a6a6; cursor:text" >
                                                 <label :style="{ display:'inherit'}" for="">status : <span :style="{'color': response.status == 200 ? 'green' : '', 'font-weight' : 'bold'}"> {{ response.status }} </span> </label>
                                                 <label :style="{ display:'inherit'}" for="" >params: <span> ({{ parameters.map( item => item.key).join(',') }}) </span></label>
@@ -192,6 +197,7 @@ export default {
             },
             response:null,
             responseFormatter:null,
+            responseData:null,
             parameters:[
                 {
                     key:null,
@@ -229,9 +235,9 @@ export default {
                 const fomatter = Formater.format(response.data);
                 this.responseFormatter = fomatter;
                 this.response = response;
+                this.responseData = response.data;
                 
             } catch (error) {
-                console.log(error);
                 this.response = error.response || null;
             }finally{
                 this.loading = false;

@@ -20,8 +20,8 @@ export class Formater{
         result = result || {}
 
         
-        key = key || 'array'
-        result[key] = `array[${type}]`
+        key = key || 'Array'
+        result[key] = `Array[${type}]`
 
         if(ArrayType.is(item)){
            return Formater.formatArray(item, key, result)
@@ -61,7 +61,6 @@ export class Formater{
         }else if( ObjectType.is(value)){
             result = Formater.formatObject(value);
         }else {
-            console.log(value);
             throw new Error('The value should be Array or Object');
         }
 

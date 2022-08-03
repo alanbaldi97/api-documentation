@@ -14,7 +14,7 @@ export class CheckType{
 
     static check(value){
         if( value == null ){
-            return 'nullable';
+            return 'Nullable';
         } else if(ArrayType.is(value)){
             return new ArrayType().toString();
         } else if(BooleanType.is(value)){
